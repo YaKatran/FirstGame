@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMowement : MonoBehaviour
 {
     public Rigidbody rb;
+    public Scene gm;
     [SerializeField]
     private float speed = 500f;
     [SerializeField]
@@ -18,6 +17,14 @@ public class PlayerMowement : MonoBehaviour
     protected bool moveForvard = false;
     protected bool moveBackvard = false;
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Obstacle"))
+        {
+            gm.EndGame();
+            Debug.Log("Конец");
+        }
+    }
     void Update()
     {
         if (Input.GetKey("s"))
@@ -63,9 +70,10 @@ public class PlayerMowement : MonoBehaviour
             doJump = false;
         }
 
-        if (transform.position.y < 5f)
+        if (transform.position.y < -5f)
         {
-
+            gm.EndGame();
+            Debug.Log("Конец");
         }
     }
     private void FixedUpdate()
